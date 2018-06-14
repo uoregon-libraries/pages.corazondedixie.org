@@ -44,6 +44,7 @@ var mapG = mapSVG.append("g").attr("class", "leaflet-zoom-hide");
 var markerLayer = L.featureGroup().addTo(map);    
 var toMarkers = {};
 var fromMarkers = {};
+var lengths = {};
 var labels = {};
 var fromIcon = new L.divIcon({ iconSize: new L.Point(12, 12), className: 'from-icon' });
 var toIcon = new L.divIcon({ iconSize: new L.Point(12, 12), className: 'to-icon' });
@@ -196,6 +197,7 @@ var updateTimeline = function(){
 		.style("left", (d3.event.pageX-250) + "px");
 	})
 	.on("mouseout", function(d){
+		mouseUp();
 	    selectedPaths = [];
 	    for(i in d.data)
 		d.data[i].isSelected = false;
@@ -265,6 +267,7 @@ var updateMarkers = function(){
     mapG.selectAll("path").remove();
 
     var showEm = [];
+    var lengths = [10];
   
     for(i in mapMarks){
 
@@ -279,6 +282,14 @@ var updateMarkers = function(){
 		showEm.push(mapMarks[i].data[x]);
 		mapMarks[i].data[x].fromMarker.addTo(markerLayer);
 		mapMarks[i].data[x].toMarker.addTo(markerLayer);
+		
+		//calculate and add path lengths
+		var test = svg.append("path")
+    		.attr("d", linkArc(mapMarks[i].data[x]));
+		//len = test.node().getTotalLength();
+		//showEm.push(length);
+		mapMarks[i].data[x].length = test.node().getTotalLength();
+		test.remove();
 	    }	    
 	}
     }
@@ -290,11 +301,15 @@ var updateMarkers = function(){
 	    selectedPaths[i].data[x].fromMarker.addTo(markerLayer);
 	}	       
     }
+    
 
     // Add the paths
     var pathEnter = mapG.selectAll("g")
 	.data(showEm)
 	.enter(); 
+	
+	
+	
     pathEnter.append("path")
     	.attr("d", function(d){ return linkArc(d); })
 	.attr("stroke", "transparent")
@@ -322,22 +337,89 @@ var updateMarkers = function(){
       		.style("opacity", 0);
 	    updateMarkers();
 	    updateTimeline();
-	});
-   pathEnter.append("path")
-	.attr("d", function(d){ return linkArc(d); })
+	})
+	
+	
+	
+   var path = pathEnter.append("path")
+   	.attr("id", "noArrow")
+	.attr("d", function(d){ return linkArc(d, d.bend); })
 	.attr("stroke", "Black")
 	.attr("stroke-width", "4px")
-	.attr("fill", "none");
+	.attr("fill", "none")
+	.attr("stroke-dasharray", function(d){ return dasharray(d);})
+	.attr("stroke-dashoffset", function(d){ return dashoffset(d);})
+	.transition()
+		.duration(2000)
+		.attr("stroke-dashoffset", 0);
+	
     pathEnter.append("path")
 	.attr("d", function(d){ return linkArc(d, d.bend); })
 	.attr("class", "travel-path")
 	.attr("pointer-events", "none")
+	//.attr("marker-end", "url(#marker)")
 	.attr("stroke", function(d){ 
 	    if(d.isSelected)
 		return d.color;
 	    else
 		return "SlateGray";
+	})
+	.attr("stroke-dasharray", function(d){ return dasharray(d);})
+	.attr("stroke-dashoffset", function(d){ return dashoffset(d);})
+	.transition()
+		.duration(2000)
+		.attr("stroke-dashoffset", 0);
+	
+function dasharray(data){
+	var len = data.length; 
+	return len + " " + len;
+}
+
+function dashoffset(data){
+	var len = data.length; 
+	return len;
+}
+
+//arrows
+var pathArray =  mapG.selectAll("#noArrow")[0];
+
+function addArrows(){
+	pathArray.forEach(function(p){
+		var arrow = mapG.append("image")
+			.data(showEm)
+			//.attr("xlink:href", "http://iconizer.net/files/DefaultIcon_ver_0.11/orig/arrow-right.png")
+			.attr("xlink:href", "http://www.osddisplays.com/images/icon-arrow-down.png")
+			.attr("width", 20)
+			.attr("height", 20)
+			.attr("orient", "top")
+			.transition()
+				.duration(2000)
+				.attrTween("transform", function(d) { return translateAlong(p, d) })
+			.remove();
 	});
+};
+
+addArrows();
+	 
+
+function translateAlong(path, d) {
+	//console.log(path);
+	//console.log(d.length);
+	return function(t) {
+		//console.log(path);
+		var previous = path.getPointAtLength(0);
+		var current = path.getPointAtLength(t * d.length);
+		//console.log("previous x: " + previous.x + " current x: " + current.x);
+		var angle = Math.atan2(current.y - previous.y, current.x - previous.x) * 180/Math.PI * 1.5 - 90;
+		//var angle = 20;
+		//var adjusted = path.getPointAtLength(t * d.length - 10)
+		//console.log("translate(" + adjusted.x + "," + adjusted.y + ")rotate(" + angle + ", 5, 12)");
+		return "translate(" + current.x + "," + current.y + ")rotate(" + angle + ", 10, 10)";
+		//return "translate(" + adjusted.x + "," + adjusted.y + ")";
+	};
+}
+		
+				
     
    
 }
@@ -492,5 +574,12 @@ ds.fetch({
 	 console.log("Error in reading data!!");
      }
  });
+ 
+//  	TimeInstant.append("marker")
+// 		.attr("markerWidth", 5)
+// 		.attr("markerHeight", 5)
+// 		.attr("cx", function(d){ return xVal(parseInt(d.data[0].startDate)); })
+// 		.attr("cy", dotPos)
+// 		.attr("stroke","DarkGray");
 
 
