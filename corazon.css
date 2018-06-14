@@ -1,11 +1,18 @@
+html {
+  background: #F5F5F5;
+}
 
 /* The svg */
-#svg-chart {
-    border: none;
+.svg-chart {
+  border: none;
+  font: 8pt Helvetica, Arial, sans-serif;
 }
-#svg-map{
-    position: relative;
+
+.svg-map{
+  font: 8pt Helvetica, Arial, sans-serif;
+  position: relative;
 }
+
 .topGroup{
     background-color: black;
     border: solid;
@@ -14,18 +21,18 @@
 
 /* Timeline styles */
 .timelineMarker{
+    /*opacity: 0.75;*/
+    /*cursor: pointer;*/
+    fill: rgb(0,102,204);
+    shape-rendering: geometricPrecision;
     stroke-width: 2px;
-    shape-rendering:geometricPrecision;
-    fill: red;
-    opacity: 0.75;
-    stroke: red;
+    stroke: rgb(0,102,204);
 }
 
 .timeline-text{
-    font-family: Verdana;
-    font-size: 8pt;
-    fill: red;
+    fill: rgb(0,102,204);
 }
+
 .dots{
     fill: LightGray;
 }
@@ -34,35 +41,34 @@
 .xaxis path,
 .xaxis line {
     fill: none;
-    stroke: #000;
     shape-rendering: crispEdges;
+    stroke: #000;
 }
+
 .xaxis text{
-    font-family: Verdana;
-    font: 10pt sans-serif;
+    font: 10pt Helvetica, Arial, sans-serif;
 }
 
 /* Map tooltip style */
-div.mapTooltip{
+.mapTooltip{
+    background: #ffffff;
+    border: 1px solid silver;
+    border-radius: 2px;
+    /*min-height: 110px;*/
+    font: 10pt Helvetica, Arial, sans-serif;
+    max-width: 300px;
+    padding: 10px 10px 12px;
     position: absolute;
-    text-align: center;			
-    width: 400px;					
-    height: 110px;					
-    font: 12px sans-serif;		
-    background: white;
-    border-radius: 10px;
-    border: 1px solid DimGray;
 }
 
 /* Timeline tooltip style */
-div.timelineTooltip {	
-    position: absolute;			
-    text-align: center;			
-    width: 500px;		
-    font: 12px sans-serif;		
+.timelineTooltip {
+    /*text-align: center;*/
     background: none;
+    font: 12px sans-serif;
+    position: absolute;
+    width: 500px;
 }
-
 
 .travel-path {
   fill: none;
@@ -71,17 +77,19 @@ div.timelineTooltip {
 }
 
 .from-icon{
+    background: #6bba6d;
+    border: 1px solid #3f871e;
     border-radius: 50%;
-    background: PaleGreen;
-    border: 1px solid MediumSeaGreen;
+    opacity: 1.0;
+}
+
+.to-icon{
+    background: #ba3e3c;
+    border: 1px solid #873e1e;
+    border-radius: 50%;
     opacity: 1.0
 }
-.to-icon{
-    border-radius: 50%;
-    background: Tomato;
-    border: 1px solid Brown;
-    opacity: 1.0	      
-}
+
 .custom .leaflet-popup-tip,
 .custom .leaflet-popup-content-wrapper {
     background: white;
