@@ -1,0 +1,89 @@
+
+/* The svg */
+#svg-chart {
+    border: none;
+}
+#svg-map{
+    position: relative;
+}
+.topGroup{
+    background-color: black;
+    border: solid;
+    border-width: 10px;
+}
+
+/* Timeline styles */
+.timelineMarker{
+    stroke-width: 2px;
+    shape-rendering:geometricPrecision;
+    fill: red;
+    opacity: 0.75;
+    stroke: red;
+}
+
+.timeline-text{
+    font-family: Verdana;
+    font-size: 8pt;
+    fill: red;
+}
+.dots{
+    fill: LightGray;
+}
+
+/* Axes styles */
+.xaxis path,
+.xaxis line {
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
+}
+.xaxis text{
+    font-family: Verdana;
+    font: 10pt sans-serif;
+}
+
+/* Map tooltip style */
+div.mapTooltip{
+    position: absolute;
+    text-align: center;			
+    width: 400px;					
+    height: 110px;					
+    font: 12px sans-serif;		
+    background: white;
+    border-radius: 10px;
+    border: 1px solid DimGray;
+}
+
+/* Timeline tooltip style */
+div.timelineTooltip {	
+    position: absolute;			
+    text-align: center;			
+    width: 500px;		
+    font: 12px sans-serif;		
+    background: none;
+}
+
+
+.travel-path {
+  fill: none;
+  stroke-linejoin: round;
+  stroke-width: 3px;
+}
+
+.from-icon{
+    border-radius: 50%;
+    background: PaleGreen;
+    border: 1px solid MediumSeaGreen;
+    opacity: 1.0
+}
+.to-icon{
+    border-radius: 50%;
+    background: Tomato;
+    border: 1px solid Brown;
+    opacity: 1.0	      
+}
+.custom .leaflet-popup-tip,
+.custom .leaflet-popup-content-wrapper {
+    background: white;
+    opacity: 0.85;
+}
