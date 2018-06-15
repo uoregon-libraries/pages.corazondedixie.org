@@ -445,17 +445,9 @@ var updateMarkers = function() {
 
 // @ @ @ @ @ @ Start Control @ @ @ @ @ @ @ //
 
-// Read in the data from Google spreadsheets
-var ds = new Miso.Dataset({
-    key: "11Gw4VPQ77viKBSthdR4dcXIm4qTm27bQB4EH6_4mNk4",
-    worksheet: "1",
-    importer: Miso.Dataset.Importers.GoogleSpreadsheet,
-    parser: Miso.Dataset.Parsers.GoogleSpreadsheet
-});
-
-ds.fetch({
-    success: function() {
-
+// Read in the data from Google spreadsheet's CSV export
+var sheetURL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSKO-cnJx6vRv6rx3MoFx5IknwR5I7JduqKWmwI0dNLsIgWeiVBd1KdZDAkC6qxoaU6e45GyordMhOy/pub?gid=0&single=true&output=csv";
+d3.csv(sheetURL, function(error, data) {
         // Save off date info
         dates = []
         periods = [];
@@ -463,7 +455,7 @@ ds.fetch({
         var tmpInst = {};
 
         // Go through the data, create markers
-        this.each(function(d) {
+        data.forEach(function(d) {
 
             // - - - - Extract data for the timeline - - - - //
             // Add to the dates
@@ -589,9 +581,4 @@ ds.fetch({
 
         updateMarkers();
         sizeChange();
-    },
-    error: function() {
-        // your error callback here!
-        console.log("Error in reading data!!");
-    }
 });
