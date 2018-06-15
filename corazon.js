@@ -595,10 +595,3 @@ ds.fetch({
         console.log("Error in reading data!!");
     }
 });
-
-//  	TimeInstant.append("marker")
-// 		.attr("markerWidth", 5)
-// 		.attr("markerHeight", 5)
-// 		.attr("cx", function(d){ return xVal(parseInt(d.data[0].startDate)); })
-// 		.attr("cy", dotPos)
-// 		.attr("stroke","DarkGray");
