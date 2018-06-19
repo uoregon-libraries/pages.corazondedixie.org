@@ -35,7 +35,7 @@ var map = new L.Map("map", {
         center: [26.91, -100.93],
         zoom: 4
     })
-    .addLayer(new L.TileLayer("http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
+    .addLayer(new L.TileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"));
 
 map.on("zoomend", function(e) {
     updateMarkers();
